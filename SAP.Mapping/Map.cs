@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 namespace SAP.Mapping
 {
 	/// <summary>
-	/// Classe utilitaire pour éviter les boucles de mapping en utilisant la réflection
+	/// Classe utilitaire pour éviter les boucles de mapping dans la couche business
+    /// Utilisation de la réflection une seule fois pour récupérer les propriétés des objets C#
+    /// Peut-être plus lent qu'un mapping brut champ à champ.
 	/// </summary>
 	public class Map
 	{
