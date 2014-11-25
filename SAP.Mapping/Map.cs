@@ -70,8 +70,9 @@ namespace SAP.Mapping
 			return conList.ToList();
 		}
 		/// <summary>
-		/// retourne un objet SAP avec les valeurs d'un objet C#
-        /// Les classes C# sont prioritaires, si une propriétés présentes dans l'objet C# n'est pas défini dans l'objet IRfcStructure, une erreur est retournée
+		/// Retourne une instance d'un objet IRFcStructure mappé sur la définition de T
+        /// Si l'instance IRFcStructure n'a pas une propriété défini dans T, une exception est levée
+        /// ça sera amélioré dans une prochaine mise à jour
 		/// </summary>
 		/// <typeparam name="T">Objet C#, ne doit pas avoir plus de propriétés que l'objet de destination</typeparam>
 		/// <param name="obj">instance dont on va extraire les propriétés</param>
