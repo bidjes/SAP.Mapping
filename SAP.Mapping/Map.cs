@@ -11,8 +11,8 @@ namespace SAP.Mapping
 {
 	/// <summary>
 	/// Classe utilitaire pour éviter les boucles de mapping dans la couche business
-    /// Utilisation de la réflection une seule fois pour récupérer les propriétés des objets C#
-    /// Peut-être plus lent qu'un mapping brut champ à champ.
+	/// Utilisation de la réflection une seule fois pour récupérer les propriétés des objets C#
+	/// Peut-être plus lent qu'un mapping brut champ à champ.
 	/// </summary>
 	public class Map
 	{
@@ -21,14 +21,14 @@ namespace SAP.Mapping
 		/// </summary>
 		/// <typeparam name="T">type d'objet à mappé</typeparam>
 		/// <param name="table">table SAP</param>
-		/// <returns></returns>
+		/// <returns>retourne une IList avec les valeurs de la table SAP</returns>
 		public static IList<T> TableMapParallel<T>(IRfcTable table)
 		{
 			//collection gérant la concurrence
 			ConcurrentQueue<T> conList = new ConcurrentQueue<T>();
 			//permet de récupérer le type de T
 			Type ty = typeof(T);
-			//liste des propriétés de la classe, permet de réduire la réflection
+			//liste des propriétés de la classe, utilisation de la réflection une seule fois
 			List<PropertyInfo> propInfo = ty.GetProperties().ToList();
 			//pour toutes les lignes de la table SAP
 			Parallel.ForEach(table, ligneBapi =>
@@ -73,8 +73,8 @@ namespace SAP.Mapping
 		}
 		/// <summary>
 		/// Retourne une instance d'un objet IRFcStructure mappé sur la définition de T
-        /// Si l'instance IRFcStructure n'a pas une propriété défini dans T, une exception est levée
-        /// ça sera amélioré dans une prochaine mise à jour
+		/// Si l'instance IRFcStructure n'a pas une propriété défini dans T, une exception est levée
+		/// ça sera amélioré dans une prochaine mise à jour
 		/// </summary>
 		/// <typeparam name="T">Objet C#, ne doit pas avoir plus de propriétés que l'objet de destination</typeparam>
 		/// <param name="obj">instance dont on va extraire les propriétés</param>
@@ -95,12 +95,12 @@ namespace SAP.Mapping
 				}
 				catch (MemberAccessException e)
 				{
-                    throw new MemberAccessException("Impossible de convertir l'élément " + info.Name, e);
+					throw new MemberAccessException("Impossible de convertir l'élément " + info.Name, e);
 				}
-                catch(Exception e)
-                {
-                    throw new Exception("Erreur inconnue en tentant de mapper " + info.Name, e);
-                }
+				catch(Exception e)
+				{
+					throw new Exception("Erreur inconnue en tentant de mapper " + info.Name, e);
+				}
 			}
 			return objSAP;
 		}
@@ -109,7 +109,7 @@ namespace SAP.Mapping
 		/// </summary>
 		/// <typeparam name="T">Objet C#</typeparam>
 		/// <param name="ligneBapi">Instance de IRfcStructure dont on va récupérer les propriétés</param>
-        /// <returns>Retourne un objet de type T avec les propriétés présentes dans l'instance IRfcStructure</returns>
+		/// <returns>Retourne un objet de type T avec les propriétés présentes dans l'instance IRfcStructure</returns>
 		public static T MapObject<T>(IRfcStructure ligneBapi)
 		{
 			var ligneNet = Activator.CreateInstance<T>();
